@@ -72,11 +72,18 @@ router.put(
         id,
         updateNormalUser
       );
+      const token = await jwt.generateToken({
+        _id: userData._id,
+        isAdmin: userData.isAdmin,
+        isBusiness: userData.isBusiness,
+      });
+      res.status(200).json({ token: token });
       res.status(200).json({
         msg: `user - ${updateUser.name.firstName} ${updateUser.name.lastName} update!`,
       });
     } catch (err) {
       res.status(400).json({ error: err.message });
+      console.log(err.message);
     }
   }
 );

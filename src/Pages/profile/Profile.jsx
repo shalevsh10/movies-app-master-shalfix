@@ -12,6 +12,7 @@ import { TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
+import useLoggedIn from "../../hooks/useLoggedIn";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { feildValidation } from "../../validation/feildValidation";
@@ -44,6 +45,8 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
     );
     setFieldToFocus(fieldIndex >= 0 ? fieldIndex : 0);
   };
+
+  const loggedIn = useLoggedIn();
 
   // Validate the entire form
   const validateForm = () => {
@@ -115,7 +118,6 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
           zip,
         };
 
-        delete newInputState.isBusiness;
         delete newInputState.isAdmin;
         delete newInputState.password;
 
@@ -127,6 +129,8 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
     fetchData();
     setFormError({});
   }, [openProfile]);
+
+  const replaceNavIsBuisinis = () => {};
 
   useEffect(() => {
     setFormValid(validateForm());
@@ -151,7 +155,12 @@ const Profile = ({ openProfile, setOpenProfile, avatar, onUpdate }) => {
         address: undefined,
       };
 
-      await axios.put(`/users/${_id}`, updatedCard);
+      localStorage.setItem(
+        "token",
+        (await axios.put(`/users/${_id}`, updatedCard)).data.token
+      );
+
+      loggedIn();
       setIsLoading(false);
       handleClose(false);
       onUpdate(inputState.url, inputState.alt, inputState.firstName);

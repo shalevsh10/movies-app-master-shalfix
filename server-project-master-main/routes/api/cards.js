@@ -12,7 +12,7 @@ const authmw = require("../../middleware/authMiddleware");
 router.post("/", authmw, async (req, res) => {
   try {
     let normalCard = await normalizeCard(req.body, req.userData._id);
-
+  
     await normalizeCard(req.body, req.userData._id);
     await cardAccessDataService.createCard(normalCard);
     res.status(200).json();

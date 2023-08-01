@@ -36,9 +36,19 @@ export const cardFormArray = [
     type: "number",
     sm: 4,
     required: true,
-    joi: Joi.number().min(1).required(),
+    joi: Joi.number()
+      .integer()
+      .min(1000)
+      .max(9999)
+      .required()
+      .messages({
+      "number.base": `Please enter a valid number.`,
+      "number.integer": `Please enter an integer (no decimal places).`,
+      "number.min": `Please enter min 4 numbers.`,
+      "number.max": `Please enter max 4 numbers.`,
+      "any.required": `This field is required.`,
+  }),
   },
-
   {
     label: "Image Alt",
     name: "alt",
@@ -56,11 +66,11 @@ export const cardFormArray = [
     sm: 12,
     required: false,
     joi: Joi.string()
-      // .pattern(
-      //   new RegExp(
-      //     "^(https?://)?[^\\s/]+\\.[^\\s/]+/\\S+\\.(jpg|jpeg|png|gif)$"
-      //   )
-      // )
+      .pattern(
+        new RegExp(
+          "^(https?://)?[^\\s/]+\\.[^\\s/]+/\\S+\\.(jpg|jpeg|png|gif)$"
+        )
+      )
       .messages({ "string.pattern.base": `Image url is not vaild` })
       .allow(""),
   },

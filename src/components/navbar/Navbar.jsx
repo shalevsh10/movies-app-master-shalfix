@@ -233,6 +233,33 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                     </Typography>
                   </MenuItem>
                 ))}
+              
+                {(isLoggedIn && payload && payload.isBusiness) ||
+                payload?.isAdmin
+                  ? BizAdminPages.map((page) => (
+                      <MenuItem
+                        key={"miniLinks" + page.url}
+                        onClick={handleCloseNavMenu}
+                      >
+                        <Typography
+                          textAlign="center"
+                          sx={{ fontSize: "1rem" }}
+                        >
+                          <NavLink
+                            to={page.url}
+                            label={page.label}
+                            style={{
+                              color: darkMode ? "#e8f5e9" : "#212121",
+                              textDecoration: "none",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {page.label}
+                          </NavLink>
+                        </Typography>
+                      </MenuItem>
+                    ))
+                  : ""}
                 {isLoggedIn
                   ? ""
                   : notAuthPages.map((page) => (
